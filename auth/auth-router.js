@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const secrets = require('../config/secrets');
 const jwt = require('jsonwebtoken')
+const passport = require('passport');
 
 const Users = require('../users/users-model');
 
@@ -39,6 +40,14 @@ router.post('/login', (req, res) => {
     })
 
 });
+
+router.get("/login/google", passport.authenticate("google", {
+  scope: ['profile']
+}));
+
+router.get("/login/google/redirect", passport.authenticate("google"), (req, res) => {
+  res.redirect("http://localhost:3000/jokeslist");
+})
 
 function generateToken(user) {
 
